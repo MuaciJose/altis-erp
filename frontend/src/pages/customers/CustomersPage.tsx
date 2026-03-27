@@ -8,23 +8,9 @@ type Customer = {
     name: string;
     tradeName?: string;
     document: string;
-    secondaryDocument?: string;
-    birthOrFoundationDate?: string;
     email?: string;
-    mobilePhone?: string;
-    landlinePhone?: string;
-    zipCode?: string;
-    street?: string;
-    number?: string;
-    complement?: string;
-    district?: string;
     city?: string;
     state?: string;
-    profession?: string;
-    companyName?: string;
-    responsibleSeller?: string;
-    notes?: string;
-    tags?: string;
 };
 
 type CepLookupResponse = {

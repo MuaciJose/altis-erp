@@ -14,7 +14,7 @@ public class RegistryLookupService {
     private final RestClient restClient = RestClient.builder().build();
 
     public CepLookupResponse lookupCep(String zipCode) {
-        String normalized = zipCode.replaceAll("\\D", "");
+        String normalized = onlyDigits(zipCode);
 
         if (normalized.length() != 8) {
             throw new RuntimeException("CEP inválido");
@@ -34,16 +34,16 @@ public class RegistryLookupService {
 
         return new CepLookupResponse(
                 normalized,
-                (String) response.get("logradouro"),
-                (String) response.get("complemento"),
-                (String) response.get("bairro"),
-                (String) response.get("localidade"),
-                (String) response.get("uf")
+                value(response.get("logradouro")),
+                value(response.get("complemento")),
+                value(response.get("bairro")),
+                value(response.get("localidade")),
+                value(response.get("uf"))
         );
     }
 
     public CnpjLookupResponse lookupCnpj(String cnpj) {
-        String normalized = cnpj.replaceAll("\\D", "");
+        String normalized = onlyDigits(cnpj);
 
         if (normalized.length() != 14) {
             throw new RuntimeException("CNPJ inválido");
@@ -62,16 +62,16 @@ public class RegistryLookupService {
         }
 
         return new CnpjLookupResponse(
-                (String) response.get("razao_social"),
-                (String) response.get("nome_fantasia"),
+                value(response.get("razao_social")),
+                value(response.get("nome_fantasia")),
                 normalized,
-                onlyDigits((String) response.get("cep")),
-                (String) response.get("logradouro"),
-                (String) response.get("numero"),
-                (String) response.get("complemento"),
-                (String) response.get("bairro"),
-                (String) response.get("municipio"),
-                (String) response.get("uf")
+                onlyDigits(value(response.get("cep"))),
+                value(response.get("logradouro")),
+                value(response.get("numero")),
+                value(response.get("complemento")),
+                value(response.get("bairro")),
+                value(response.get("municipio")),
+                value(response.get("uf"))
         );
     }
 
@@ -80,5 +80,9 @@ public class RegistryLookupService {
             return null;
         }
         return value.replaceAll("\\D", "");
+    }
+
+    private String value(Object value) {
+        return value == null ? null : String.valueOf(value);
     }
 }
