@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.Map;
 
 @Service
 public class JwtService {
@@ -24,12 +25,13 @@ public class JwtService {
         this.expiration = expiration;
     }
 
-    public String generateToken(String subject) {
+    public String generateToken(String subject, Long tenantId) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + expiration);
 
         return Jwts.builder()
                 .subject(subject)
+                .claims(Map.of("tenantId", tenantId))
                 .issuedAt(now)
                 .expiration(expiryDate)
                 .signWith(secretKey)
@@ -38,6 +40,20 @@ public class JwtService {
 
     public String extractUsername(String token) {
         return extractClaims(token).getSubject();
+    }
+
+    public Long extractTenantId(String token) {
+        Object value = extractClaims(token).get("tenantId");
+        if (value instanceof Integer integerValue) {
+            return integerValue.longValue();
+        }
+        if (value instanceof Long longValue) {
+            return longValue;
+        }
+        if (value instanceof String stringValue) {
+            return Long.parseLong(stringValue);
+        }
+        return null;
     }
 
     public boolean isTokenValid(String token) {

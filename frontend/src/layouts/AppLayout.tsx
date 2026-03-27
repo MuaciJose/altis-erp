@@ -1,11 +1,12 @@
 import { Outlet, useNavigate } from "react-router-dom";
-import { removeToken } from "../modules/auth/store/authStorage";
+import { useAuth } from "../modules/auth/store/AuthContext";
 
 export default function AppLayout() {
     const navigate = useNavigate();
+    const { user, tenantId, logout } = useAuth();
 
     function handleLogout() {
-        removeToken();
+        logout();
         navigate("/");
     }
 
@@ -44,8 +45,19 @@ export default function AppLayout() {
                     </button>
                 </nav>
 
-                <div className="mt-auto space-y-3">
-                    <div className="text-sm text-slate-400">Altis Tecnologia</div>
+                <div className="mt-auto space-y-3 border-t border-white/10 pt-4">
+                    <div className="text-sm text-slate-300">
+                        {user?.name ?? "Usuário"}
+                    </div>
+
+                    <div className="text-xs text-slate-500">
+                        {user?.email ?? ""}
+                    </div>
+
+                    <div className="text-xs text-slate-500">
+                        Tenant: {tenantId ?? "-"}
+                    </div>
+
                     <button
                         onClick={handleLogout}
                         className="w-full text-left px-4 py-3 rounded-xl bg-white/10 hover:bg-white/20"
@@ -60,7 +72,9 @@ export default function AppLayout() {
                     <span className="font-semibold">Sistema ERP</span>
 
                     <div className="flex items-center gap-4">
-                        <span className="text-sm text-slate-500">Admin</span>
+            <span className="text-sm text-slate-500">
+              {user?.name ?? "Admin"}
+            </span>
                         <div className="h-8 w-8 bg-slate-300 rounded-full" />
                     </div>
                 </header>
