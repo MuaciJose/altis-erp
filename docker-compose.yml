@@ -1,0 +1,18 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: altis-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: altis_erp
+      POSTGRES_USER: altis
+      POSTGRES_PASSWORD: altis123
+    ports:
+      - "5432:5432"
+    volumes:
+      - altis_postgres_data:/var/lib/postgresql/data
+
+volumes:
+  altis_postgres_data:
