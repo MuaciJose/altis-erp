@@ -1,11 +1,16 @@
 import { Outlet, useNavigate } from "react-router-dom";
+import { removeToken } from "../modules/auth/store/authStorage";
 
 export default function AppLayout() {
     const navigate = useNavigate();
 
+    function handleLogout() {
+        removeToken();
+        navigate("/");
+    }
+
     return (
         <div className="min-h-screen flex bg-slate-100">
-            {/* Sidebar */}
             <aside className="w-64 bg-slate-900 text-white p-5 flex flex-col">
                 <div className="text-2xl font-bold mb-8">Altis ERP</div>
 
@@ -39,14 +44,18 @@ export default function AppLayout() {
                     </button>
                 </nav>
 
-                <div className="mt-auto text-sm text-slate-400">
-                    Altis Tecnologia
+                <div className="mt-auto space-y-3">
+                    <div className="text-sm text-slate-400">Altis Tecnologia</div>
+                    <button
+                        onClick={handleLogout}
+                        className="w-full text-left px-4 py-3 rounded-xl bg-white/10 hover:bg-white/20"
+                    >
+                        Sair
+                    </button>
                 </div>
             </aside>
 
-            {/* Conteúdo */}
             <div className="flex-1 flex flex-col">
-                {/* Header */}
                 <header className="h-16 bg-white border-b flex items-center px-6 justify-between">
                     <span className="font-semibold">Sistema ERP</span>
 
@@ -56,7 +65,6 @@ export default function AppLayout() {
                     </div>
                 </header>
 
-                {/* Página */}
                 <main className="p-6">
                     <Outlet />
                 </main>
