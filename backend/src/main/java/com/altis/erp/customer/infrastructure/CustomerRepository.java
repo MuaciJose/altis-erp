@@ -7,5 +7,7 @@ import java.util.List;
 
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
-    List<Customer> findByTenantId(Long tenantId);
+    List<Customer> findByTenantIdOrderByNameAsc(Long tenantId);
+
+    boolean existsByTenantIdAndDocument(Long tenantId, String document);
 }

@@ -1,7 +1,7 @@
 package com.altis.erp.customer.api;
 
 import com.altis.erp.customer.application.CustomerService;
-import com.altis.erp.customer.domain.Customer;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,12 +17,12 @@ public class CustomerController {
     }
 
     @GetMapping
-    public List<Customer> list() {
+    public List<CustomerResponse> list() {
         return service.list();
     }
 
     @PostMapping
-    public Customer create(@RequestBody Customer customer) {
-        return service.create(customer);
+    public CustomerResponse create(@Valid @RequestBody CreateCustomerRequest request) {
+        return service.create(request);
     }
 }
